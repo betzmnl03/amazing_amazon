@@ -34,5 +34,12 @@ module AmazingAmazon
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.generators do |g|
+      #Dont create helper files 
+      # --no-helper --no-assets
+      g.helper = false
+      #dont create js or css files when using rails g
+      g.assets = false
+    end 
   end
 end

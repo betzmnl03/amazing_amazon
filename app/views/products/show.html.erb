@@ -1,0 +1,14 @@
+<h3><%= @product.title%></h3>
+<p><%= @product.description %></p>
+<div>
+    <small>
+<p>Asked : <%= time_ago_in_words(@product.created_at)  %> </p>
+</small>
+<small>
+<p>Last Edited : <%= time_ago_in_words(@product.updated_at)  %> </p>
+</small>
+</div>
+<small>
+    <%= link_to("Edit", edit_product_path(@product.id))%>  |
+    <%= link_to('Delete', product_path(@product.id), remote:false, method: :delete, data: { confirm: 'Are you sure?' } )%>
+</small>
