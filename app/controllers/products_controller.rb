@@ -17,6 +17,8 @@ class ProductsController < ApplicationController
 
     def show
         # puts params[:id]
+        @reviews = @product.reviews.order(created_at: :DESC)
+        @review = Review.new
     end
 
     def create

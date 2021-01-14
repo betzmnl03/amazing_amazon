@@ -5,20 +5,35 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-   
-Product.destroy_all
+Review.delete_all 
+Product.delete_all
+
 20.times do
     created_at = Faker::Date.backward(days: 365*5)
-    Product.create(
+    p=Product.create(
         title: Faker::Commerce.product_name,
         description:Faker::Commerce.color,
-        price:Faker::Commerce.price,
+        price: Faker::Number.within(range: 1..10),
         created_at: created_at,
         updated_at: created_at
     )
 
+    if p.valid?
+        p.reviews = rand(0..5).times.map do
+            Review.new(body: Faker::Restaurant.review, rating: rand(1..5))  #faker::Number min and max are inclusive
+        end
+    end
+
+    puts p.errors.full_messages
 end
-p = Product.all
-puts Cowsay.say("Generated #{p.count} products", :dragon)
+
+
+
+
+
+product = Product.all
+review = Review.all
+puts Cowsay.say("Generated #{product.count} products", :dragon)
+puts Cowsay.say("Generated #{review.count} reviews", :frogs)
 
 
