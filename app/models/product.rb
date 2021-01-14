@@ -1,5 +1,7 @@
 class Product < ApplicationRecord
-
+    
+    belongs_to :user, optional: true
+    
     before_validation :set_default_price, :set_default_sale_price
     before_save :captitalize_title
     validates :title, presence:true, uniqueness:{case_sensitive:true, message:"please change the title. it sucks"}, confirmation:{case_sensitive:false}, exclusion: {in: ['apple','microsoft','sony'], message: "%{value} is reserved. Please use a diffferent title"}
