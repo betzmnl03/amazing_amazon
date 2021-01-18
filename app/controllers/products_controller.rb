@@ -1,12 +1,13 @@
 class ProductsController < ApplicationController
+    before_action :authenticate_user!, except: [:index, :show]
     before_action :find_product, only:[:destroy,:show, :edit, :update ]
+    before_action :authorize_user!,only:[:edit,:update,:destroy]
     def new
         @product=Product.new
     end
 
     def destroy
-        puts "inside desrtroy method"
-        @product = Product.find(params[:id])
+        puts "inside destroy method"
         @product.destroy
         redirect_to products_path
     end
@@ -23,6 +24,7 @@ class ProductsController < ApplicationController
 
     def create
         @product=Product.new product_params
+        @product.user = current_user
 
         if @product.save
             flash[:notice]="Product created successfully."
@@ -46,5 +48,10 @@ class ProductsController < ApplicationController
     end
     def product_params
         params.require(:product).permit(:title, :description, :price)
+    end
+
+
+    def authorize_user!
+        redirect_to root_path, alert: 'Not Authorized' unless can?(:crud, @product)
     end
 end

@@ -1,5 +1,5 @@
-<div class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-around">
-<span>
+<div class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+<div>
 <%=link_to  'Home', root_path%>
 |
 <%=link_to  'About', about_path%>
@@ -7,5 +7,16 @@
 <%=link_to  'New', new_product_path%>
 |
 <%=link_to  'Index', products_path%>
-</span>
+</div>
+<div>
+        <% if user_signed_in? %>
+        Hello <%= current_user.full_name %> | 
+        <%= link_to "Logout", session_path, method: :delete,
+        data: {confirm: 'Are you sure you want to log out?'}
+         %>
+        <% else %>
+        <%= link_to "Login", new_session_path %> |
+        <%= link_to "Sign Up", new_user_path %>
+        <% end %>
+</div>
 </div>
