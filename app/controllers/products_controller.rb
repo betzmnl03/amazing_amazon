@@ -12,7 +12,6 @@ class ProductsController < ApplicationController
     end
 
     def destroy
-        puts "inside destroy method"
         @product.destroy
         redirect_to products_path
     end

@@ -1,8 +1,6 @@
 class ReviewsController < ApplicationController
     before_action :authenticate_user!
     before_action :authorize_user!,only:[:edit,:update,:destroy]
-
-
     def new
         @review=Review.new
     end
@@ -12,7 +10,6 @@ class ReviewsController < ApplicationController
         @review.product=@product
         @review.user=current_user
         @review_hide = params
-        puts "-----------------inside review controller #{review_params}"
         if @review.save
          redirect_to product_path(@product), notice: 'Review created!'
         else
@@ -22,7 +19,6 @@ class ReviewsController < ApplicationController
     end
 
     def show
-        puts "********************inside show"
     end
     def destroy
         @product = Product.find params[:product_id]
@@ -39,7 +35,6 @@ class ReviewsController < ApplicationController
         else
             @review.hide = true
         end
-        print "****************inside update #{@review}"
         @review.save
         redirect_to product_path(@product)
         
@@ -47,7 +42,6 @@ class ReviewsController < ApplicationController
 
     private
     def review_params
-        puts "getting the params*********************"
         params.require(:review).permit(:body, :rating, :hide)
     end
 
