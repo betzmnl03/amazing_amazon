@@ -1,2 +1,5 @@
-<h1>"Welcome #home</h1>
-<h1>Find me in app/views/home.html.erb</h1>
+<% if user_signed_in? %>
+        <h1>Welcome <%= current_user.full_name %> !</h1>
+        <% else %>
+        <h1>Welcome to my E-commerce website</h1>
+<%end%>

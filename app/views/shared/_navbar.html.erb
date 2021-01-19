@@ -2,11 +2,9 @@
 <div>
 <%=link_to  'Home', root_path%>
 |
-<%=link_to  'About', about_path%>
+<%=link_to  'Add Product', new_product_path%>
 |
-<%=link_to  'New', new_product_path%>
-|
-<%=link_to  'Index', products_path%>
+<%=link_to  'View All Products', products_path%>
 </div>
 <div>
         <% if user_signed_in? %>
@@ -18,5 +16,12 @@
         <%= link_to "Login", new_session_path %> |
         <%= link_to "Sign Up", new_user_path %>
         <% end %>
+
+        <% if user_signed_in? && current_user.is_admin? %>
+         |
+        <%= link_to 'Admin Panel', admin_index_path, class: 'nav-item' %>
+       
+         <% end %>
+    
 </div>
 </div>
