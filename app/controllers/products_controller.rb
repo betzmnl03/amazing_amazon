@@ -6,6 +6,11 @@ class ProductsController < ApplicationController
         @product=Product.new
     end
 
+    def edit
+
+        puts "here"
+    end
+
     def destroy
         puts "inside destroy method"
         @product.destroy
@@ -20,6 +25,7 @@ class ProductsController < ApplicationController
         # puts params[:id]
         @reviews = @product.reviews.order(created_at: :DESC)
         @review = Review.new
+        @review_hide = params
     end
 
     def create
@@ -40,7 +46,10 @@ class ProductsController < ApplicationController
         else
             render :edit
         end
+
+        puts "here"
     end
+
 
     private
     def find_product
@@ -49,7 +58,6 @@ class ProductsController < ApplicationController
     def product_params
         params.require(:product).permit(:title, :description, :price)
     end
-
 
     def authorize_user!
         redirect_to root_path, alert: 'Not Authorized' unless can?(:crud, @product)

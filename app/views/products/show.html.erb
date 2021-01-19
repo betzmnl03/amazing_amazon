@@ -41,12 +41,37 @@
 <%# to show the ratings  %>
 <h3>Reviews</h3>
 <% @reviews.each do |review|%>
-<div class="card">
-<p class="card-body">
-<%= review.body %>
-<p class="ml-4"> Rating:</p>
-<h4 class="ml-4">
-<%= display_stars(review) %></h4>
+<% if review.hide == false || (can? :crud, @product)%>
+    <% if review.hide == false%>
+        <div class="card">
+        <p class="card-body">
+        <%= review.body %>
+        <p class="ml-4"> Rating:</p>
+        <h4 class="ml-4">
+    <% else review.hide == true%>
+        <div class="card text-muted">
+        <p class="card-body">
+        <%= review.body %>
+        <p class="ml-4"> Rating:</p>
+        <h4 class="ml-4">
+    <%end%>
+    <%= display_stars(review) %></h4>
+    <% if can? :crud, @product %>
+        <small>
+        <%if review.hide == false%>
+            <%= form_with model: [@product, review], :class=>"form-group ml-4", local: true do |form| %>
+            <%= form.submit label_tag="Hide Review"%>
+            <%end%>
+            </small>
+            <%end%>
+        <%if review.hide == true%>
+            <%= form_with model: [@product, review], :class=>"form-group ml-4", local: true do |form| %>
+            <%= form.submit label_tag="UnHide Review"%>
+            <%end%>
+        </small>
+    <%end%>
+<%end%>
+
 <div class=ml-4>
     Reviewed by:
     <%= review.user&.full_name || "DELETED" %>
@@ -55,6 +80,7 @@
 <p class="ml-4"><%= link_to "Delete",product_review_path(@product,review), method: :delete,data: {confirm: "Are you sure?"} %>
 </p>
 <%end%>
+
 </p>
 
 </p>
@@ -62,3 +88,4 @@
 
 <br/>
 <% end %> 
+<%end%>
