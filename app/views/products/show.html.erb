@@ -3,7 +3,8 @@
 <h3 ><%= @product.title%></h3>
 <p><%= @product.description %></p>
 <p>Price: $<%= @product.price %></p>
-<p>Created by $<%= @product.user&.full_name || "DELETED" %></p>
+<p>Category: <%= @product.category %></p>
+<p>Sold by: <%= @product.user&.full_name || "DELETED" %></p>
 <small>
 <% if can? :crud, @product%>
     <%= link_to("Edit", edit_product_path(@product.id))%>  |
@@ -44,16 +45,30 @@
         <div class="card">
         <p class="card-body">
         <%= review.body %>
-        <p class="ml-4"> Rating:</p>
-        <h4 class="ml-4">
+        <br/>
+        <span> Rating:</span>
     <% else review.hide == true%>
         <div class="card text-muted">
         <p class="card-body">
         <%= review.body %>
-        <p class="ml-4"> Rating:</p>
-        <h4 class="ml-4">
+        <span> Rating:</span>
     <%end%>
-    <%= display_stars(review) %></h4>
+    <%# display_stars is a helpermethod in reviews_helper %>
+    <% p=display_stars(review)%>
+    <span>
+    <span style="font-size:200%; color:yellow;">
+        <%p[0].times do %>
+        &starf;
+           
+        <%end%>
+    </span>
+    <span style="font-size:200%; color:yellow;">
+        <%p[1].times do %>
+             &#9734;
+        <%end%>
+    </span>
+    </span>
+   
     <% if can? :crud, review %>
         <small>
         <%if review.hide == false%>

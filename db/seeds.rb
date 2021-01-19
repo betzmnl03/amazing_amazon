@@ -36,7 +36,8 @@ super_user= User.create(
     p=Product.create(
         title: Faker::Commerce.product_name,
         description:Faker::Commerce.color,
-        price: Faker::Number.within(range: 1..10),
+        price: Faker::Commerce.price(range: 0..20.0, as_string: false),
+        category: Faker::Commerce.department(max: 2, fixed_amount: true),
         created_at: created_at,
         updated_at: created_at,
         user: users.sample

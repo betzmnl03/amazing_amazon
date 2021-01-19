@@ -7,8 +7,6 @@ class ProductsController < ApplicationController
     end
 
     def edit
-
-        puts "here"
     end
 
     def destroy
@@ -17,25 +15,33 @@ class ProductsController < ApplicationController
     end
     
     def index
-        @products=Product.all.order(created_at: :desc)
+        @products=Product.all.order(title: :ASC)  
+        @search_word=""
+        @count=@products.count
     end
 
     def show
-        # puts params[:id]
         @reviews = @product.reviews.order(created_at: :DESC)
         @review = Review.new
         @review_hide = params
     end
 
     def create
-        @product=Product.new product_params
-        @product.user = current_user
-
-        if @product.save
-            flash[:notice]="Product created successfully."
-            redirect_to product_path(@product.id)
+        if params[:search]
+            @search_word = params[:search]
+            @products= Product.where("title ilike?", "%#{@search_word}%")
+            @count=@products.count
+            render :index
         else
-            render :new
+            @product=Product.new product_params
+            @product.user = current_user
+
+            if @product.save
+                flash[:notice]="Product created successfully."
+                redirect_to product_path(@product.id)
+            else
+                render :new
+            end
         end
     end
 
@@ -45,17 +51,14 @@ class ProductsController < ApplicationController
         else
             render :edit
         end
-
-        puts "here"
     end
-
 
     private
     def find_product
         @product=Product.find params[:id] 
     end
     def product_params
-        params.require(:product).permit(:title, :description, :price)
+        params.require(:product).permit(:title, :description, :price, :category, :image)
     end
 
     def authorize_user!
