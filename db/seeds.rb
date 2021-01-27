@@ -6,6 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Vote.delete_all
 Like.delete_all
 Tagging.delete_all
 Favourite.delete_all
@@ -70,7 +71,10 @@ NUM_PRODUCTS.times do
         end
         p.reviews.each do |review|
             review.likers=users.shuffle.slice(0,rand(users.count))
+            review.voters=users.shuffle.slice(0,rand(users.count))
         end
+
+   
         p.tags= tags.shuffle.slice(0,rand(tags.count))
 
        
