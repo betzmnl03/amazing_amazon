@@ -5,8 +5,28 @@ Rails.application.routes.draw do
 
 
   resources :products do
-    resources :reviews
+    
+    resources :reviews do
+    
+    end
+    get :liked, on: :collection
+
+    resources :favourites, shallow: true, only: [:create, :destroy]
+    get :favourited, on: :collection
+
+    # get :tagged, on: :collection
+    # resources :tags
+    
+
   end
+
+  
+  resources :likes, only: [:create, :destroy]
+  resources :votes, only: [:create, :destroy] do
+    get :voted, on: :collection  
+  end
+  resources :tags, only:[:index, :show]
+  resources :favourites, only:[:create]
   resources :users, only:[:new, :create]
   resources :admin
   resource :session, only:[:new, :create, :destroy]

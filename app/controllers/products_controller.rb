@@ -9,6 +9,10 @@ class ProductsController < ApplicationController
     def edit
     end
 
+    def liked
+        @reviews= current_user.liked_reviews.order(created_at: :desc)
+    end
+
     def destroy
         @product.destroy
         redirect_to products_path
@@ -24,6 +28,9 @@ class ProductsController < ApplicationController
         @reviews = @product.reviews.order(created_at: :DESC)
         @review = Review.new
         @review_hide = params
+        # @like=@review.likes.find_by(user: current_user)
+        @favourite = @product.favourites.find_by_user_id current_user if user_signed_in?
+        # @vote = @product.votes.find_by_user_id current_user if user_signed_in?
     end
 
     def create
@@ -58,7 +65,7 @@ class ProductsController < ApplicationController
         @product=Product.find params[:id] 
     end
     def product_params
-        params.require(:product).permit(:title, :description, :price, :category, :image)
+        params.require(:product).permit(:title, :description, :price, :category, :image, :tag_names)
     end
 
     def authorize_user!

@@ -11,10 +11,15 @@ class Product < ApplicationRecord
     DEFAULT_PRICE = 1
 
 
+    has_many :taggings, dependent: :destroy
+    has_many :tags, through: :taggings
+
+
     def self.search(query)
         where("title ILIKE?", "%#{query}%")
         where("description ILIKE?", "%#{query}%")
     end
+
 
     def increment_hit_count
         new_hit_count = self.hit_count += 1
@@ -28,6 +33,18 @@ class Product < ApplicationRecord
      #ASSOCIATION WITH PRODUCT MODEL
      has_many :reviews, dependent: :nullify #we can choose to destroy the dependents or nullify
 
+     has_many :favourites, dependent: :destroy
+     has_many :favouriters, through: :favourites, source: :user
+
+    def tag_names
+        self.tags.map(&:name).join(', ')
+    end
+
+    def tag_names=(rhs)
+        self.tags=rhs.strip.split(/\s*,\s*/).map do|tag_name|
+            Tag.find_or_initialize_by(name: tag_name)
+        end
+    end
 
     private
 

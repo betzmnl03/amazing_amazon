@@ -1,0 +1,10 @@
+
+<% @reviews.each do |review|%>
+<div class="card">
+<div class="card-body">
+    <h5> <%= review.body%></h5>
+    <small> Vote Count: <%= review.votes_count %></small>
+</div>
+</div>
+<%end%>
+

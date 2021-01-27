@@ -8,6 +8,8 @@ class ReviewsController < ApplicationController
         @review.save
         redirect_to product_path(@product), notice: 'Review created!'
     end
+
+
     def update
         @review=Review.find params[:id]
         if can?(:crud, @review)

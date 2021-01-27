@@ -5,12 +5,21 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.delete_all
+
+Like.delete_all
+Tagging.delete_all
+Favourite.delete_all
+
 Review.delete_all 
 Product.delete_all
+User.delete_all
 
 
+NUM_PRODUCTS=20
+NUM_USERS=10
+NUM_TAGS=10
 PASSWORD='supersecret'
+
 super_user= User.create(
     first_name: 'Jon',
     last_name:'Snow',
@@ -19,7 +28,7 @@ super_user= User.create(
     is_admin: true
 )
 
-10.times do
+NUM_USERS.times do
     first_name= Faker::Name.first_name 
     last_name= Faker::Name.last_name 
     User.create(
@@ -31,7 +40,15 @@ super_user= User.create(
     end
     users=User.all
 
-20.times do
+NUM_TAGS.times do
+    Tag.create(
+        name:Faker::Vehicle.make
+    )
+end
+
+tags = Tag.all
+
+NUM_PRODUCTS.times do
     created_at = Faker::Date.backward(days: 365*5)
     p=Product.create(
         title: Faker::Commerce.product_name,
@@ -49,7 +66,14 @@ super_user= User.create(
                 body: Faker::Restaurant.review, 
                 rating: rand(1..5),
                 user: users.sample)  
+             
         end
+        p.reviews.each do |review|
+            review.likers=users.shuffle.slice(0,rand(users.count))
+        end
+        p.tags= tags.shuffle.slice(0,rand(tags.count))
+
+       
     end
 
     puts p.errors.full_messages
@@ -65,5 +89,6 @@ puts Cowsay.say("Generated #{product.count} products", :dragon)
 puts Cowsay.say("Generated #{review.count} reviews", :frogs)
 puts Cowsay.say("Generated #{users.count} users.",:beavis)
 puts Cowsay.say("Login with  #{super_user.email} and password:#{PASSWORD}.",:koala)
+puts Cowsay.say("Generated #{tags.count} tags.",:sheep)
 
 

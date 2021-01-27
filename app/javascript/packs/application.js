@@ -14,3 +14,7 @@ ActiveStorage.start()
 import "bootstrap";
 import '../stylesheets/application'
 import '../packs/products'
+import './selectize'
+
+window.jQuery=$;
+window.$=$;

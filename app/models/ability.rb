@@ -39,5 +39,31 @@ class Ability
     can(:crud,Review) do |review|
       user==review.user
     end
+
+    can(:like, Review) do |review|
+      user.persisted? && review.user != user
+      # user.persisted? check if user is saved in a db or not
+      # question.user != user . Do not allow a user to like hi/her own question
+    end
+    can(:destroy, Like) do |like|
+      like.user == user
+    end
+
+
+    can(:favourite, Product) do |product|
+      user.persisted? && product.user != user
+      # user.persisted? check if user is saved in a db or not
+      # question.user != user . Do not allow a user to like his/her own question
+    end
+    can(:destroy, Favourite) do |favourite|
+      favourite.user == user
+    end
+
+    can(:vote, Review) do |review|
+      user.persisted? && review.user !=user
+    end
+    can(:destroy, Vote) do |vote|
+      vote.user == user
+    end
   end
 end
